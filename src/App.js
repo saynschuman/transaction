@@ -123,8 +123,8 @@ function App() {
           {list.map((item) => (
             <tr>
               <td>{item.id}</td>
-              <td>{item.status}</td>
               <td>{item.payment}</td>
+              <td>{item.status}</td>
             </tr>
           ))}
         </tbody>
