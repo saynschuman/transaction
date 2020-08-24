@@ -47,7 +47,7 @@ function App() {
     <Container mt="30px">
       <Box display="flex" mb="10px" alignItems="center">
         <Input type="file" accept=".xml,.csv" onChange={(e) => onChange(e, 'file')} />
-        <Button ml="10px" onClick={post}>
+        <Button ml="10px" onClick={post} disabled={!values.file.name}>
           import
         </Button>
       </Box>
@@ -80,7 +80,11 @@ function App() {
         <Input type="date" onChange={(e) => onChange(e, 'timeTo')} style={{ maxWidth: '300px' }} />
       </Box>
       <Box mb="10px">
-        <Button onClick={get} width="100%">
+        <Button
+          onClick={get}
+          width="100%"
+          disabled={!values.status || !values.currencyCode || !values.timeFrom || !values.timeTo}
+        >
           Get
         </Button>
       </Box>
