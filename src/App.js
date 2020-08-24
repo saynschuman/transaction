@@ -43,12 +43,12 @@ function App() {
   const post = async () => {
     try {
       await sendFile({ file: values.file })
-      addToast('Файл успешно отправлен', {
+      addToast('File sent', {
         appearance: 'success',
         autoDismiss: true,
       })
     } catch (e) {
-      addToast('Не удалось отправить файл, попробуйте еще раз', {
+      addToast('Fail send', {
         appearance: 'error',
         autoDismiss: true,
       })
@@ -63,7 +63,7 @@ function App() {
       setLoading(false)
     } catch (e) {
       setLoading(false)
-      addToast('Ошибка', {
+      addToast('Failed request', {
         appearance: 'error',
         autoDismiss: true,
       })
@@ -79,14 +79,14 @@ function App() {
         </Button>
       </Box>
       <Box mb="10px">
-        <Input type="text" placeholder="Код валюты" onChange={(e) => onChange(e, 'currencyCode')} />
+        <Input type="text" placeholder="Currency code" onChange={(e) => onChange(e, 'currencyCode')} />
       </Box>
       <Box mb="10px" display="flex" justifyContent="space-between" alignItems="center">
         <Text mr="5px" fontWeight="bold">
-          Статус
+          Status
         </Text>
         <Select onChange={(e) => onChange(e, 'status')}>
-          <option value="">Не выбрано</option>
+          <option value="">Not chosen</option>
           <option value="1">Approved</option>
           <option value="2">Failed</option>
           <option value="3">Rejected</option>
