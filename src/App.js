@@ -3,10 +3,11 @@ import { Text, Box, Button, Container, Select } from '@chakra-ui/core'
 import { Table, Input } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.css'
 import { sendFile, getFields } from './requests'
-
+import { useToasts } from 'react-toast-notifications'
 import './App.css'
 
 function App() {
+  const { addToast } = useToasts()
   const [values, setValues] = React.useState({
     file: {},
     timeFrom: '',
@@ -14,6 +15,7 @@ function App() {
     currencyCode: '',
     status: '',
   })
+
   const onChange = (e, type) => {
     if (type === 'file') {
       setValues({
@@ -35,12 +37,37 @@ function App() {
     }
   }
 
+  const [list, setList] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+
   const post = async () => {
-    const res = await sendFile({ file: values.file })
+    try {
+      await sendFile({ file: values.file })
+      addToast('Файл успешно отправлен', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    } catch (e) {
+      addToast('Не удалось отправить файл, попробуйте еще раз', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }
   }
 
   const get = async () => {
-    const res = await getFields(values)
+    setLoading(true)
+    try {
+      const res = await getFields(values)
+      setList(res.data)
+      setLoading(false)
+    } catch (e) {
+      setLoading(false)
+      addToast('Ошибка', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }
   }
 
   return (
@@ -80,11 +107,7 @@ function App() {
         <Input type="date" onChange={(e) => onChange(e, 'timeTo')} style={{ maxWidth: '300px' }} />
       </Box>
       <Box mb="10px">
-        <Button
-          onClick={get}
-          width="100%"
-          disabled={!values.status || !values.currencyCode || !values.timeFrom || !values.timeTo}
-        >
+        <Button onClick={get} width="100%" disabled={loading}>
           Get
         </Button>
       </Box>
@@ -97,11 +120,13 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-          </tr>
+          {list.map((item) => (
+            <tr>
+              <td>{item.id}</td>
+              <td>{item.status}</td>
+              <td>{item.payment}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Container>

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import { ToastProvider } from 'react-toast-notifications'
 import { ChakraProvider, CSSReset } from '@chakra-ui/core'
 import theme from '@chakra-ui/theme'
 
@@ -11,12 +12,12 @@ const customTheme = {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
+  <ToastProvider autoDismiss autoDismissTimeout={4000} placement="top-center">
     <ChakraProvider theme={customTheme}>
       <CSSReset />
       <App />
     </ChakraProvider>
-  </React.StrictMode>,
+  </ToastProvider>,
   document.getElementById('root'),
 )
 
